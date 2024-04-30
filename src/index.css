@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	font-weight: 400;
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	min-height: 100dvh;
+	background-color: #f5f7f2;
+}
+
+#root {
+	min-height: 100dvh;
+	background-color: inherit;
+}
+
+.wix-madefor-display {
+	font-family: 'Wix Madefor Display', sans-serif;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+	input[type='range']::-webkit-slider-thumb {
+		width: 24px;
+		-webkit-appearance: none;
+		appearance: none;
+		height: 24px;
+		border: 2px solid #252521;
+		cursor: pointer;
+		background: #fff;
+		/* drop-shadow: -405px 0 0 400px #252521; */
+		filter: drop-shadow(405px 0 0 400px #252521);
+		border-radius: 50%;
+	}
+}
