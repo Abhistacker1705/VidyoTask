@@ -14,8 +14,6 @@ export const Tabs = ({
 	tabs: propTabs,
 	clips,
 	setClips,
-	handleClipsChange,
-	clipsToggled,
 	containerClassName,
 	activeTabClassName,
 	tabClassName,
@@ -24,8 +22,7 @@ export const Tabs = ({
 	tabs: Tab[];
 	clips: number;
 	setClips: any;
-	handleClipsChange: any;
-	clipsToggled: any;
+
 	containerClassName?: string;
 	activeTabClassName?: string;
 	tabClassName?: string;
@@ -70,13 +67,11 @@ export const Tabs = ({
 			<ClipsToggle
 				clips={clips}
 				setClips={setClips}
-				handleClipsChange={handleClipsChange}
 			/>
 
 			<FadeInDiv
 				active={active}
-				clips={clips}
-				key={clipsToggled}
+				key={clips}
 				className={cn('mt-32', contentClassName)}
 			/>
 		</div>
@@ -85,14 +80,11 @@ export const Tabs = ({
 
 export const FadeInDiv = ({
 	className,
-
 	active,
-	clips,
 }: {
 	className?: string;
 	key?: string | number | Boolean;
 	active: Tab;
-	clips: number;
 }) => {
 	return (
 		<div className="w-full h-full">
@@ -111,7 +103,7 @@ export const FadeInDiv = ({
 	);
 };
 
-const ClipsToggle = ({clips, setClips, handleClipsChange}) => {
+const ClipsToggle = ({clips, setClips}) => {
 	return (
 		<div className="flex w-full justify-between items-center gap-4 max-md:flex-col">
 			<p className="text-xl text-center font-medium">
@@ -130,7 +122,6 @@ const ClipsToggle = ({clips, setClips, handleClipsChange}) => {
 					id="myRange"
 					onChange={(e) => {
 						setClips(e.target.value);
-						handleClipsChange(e.target.value);
 					}}
 				/>
 				<p>{'200+'}</p>

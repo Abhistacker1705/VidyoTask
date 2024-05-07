@@ -1,17 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {Tabs} from './ui/tabs';
 import {Card, CustomCard} from './ui/Cards';
 import {PlansPricing, CustomPricing} from '../datas/CardData';
+import {ClipsContext} from '../contexts/ClipsContext';
 
 const PricingCTAandCards = () => {
-	const [clips, setClips] = useState(50);
-	const [clipsToggled, setClipsToggled] = useState(false);
-
-	const handleClipsChange = (value) => {
-		const color = value > 185 ? true : false;
-		setClipsToggled(color);
-	};
-
+	const {clips, setClips} = useContext(ClipsContext);
 	const tabs = [
 		{
 			title: (
@@ -26,15 +20,9 @@ const PricingCTAandCards = () => {
 						<Card
 							key={plan.planName}
 							plan={plan}
-							clips={clips}
-							clipsToggled={clipsToggled}
 						/>
 					))}
-					<CustomCard
-						plan={CustomPricing}
-						clips={clips}
-						clipsToggled={clipsToggled}
-					/>
+					<CustomCard plan={CustomPricing} />
 				</div>
 			),
 		},
@@ -55,17 +43,11 @@ const PricingCTAandCards = () => {
 						<Card
 							key={plan.planName}
 							plan={plan}
-							clips={clips}
-							clipsToggled={clipsToggled}
 						/>
 					))}
-					<CustomCard
-						plan={CustomPricing}
-						clipsToggled={clipsToggled}
-					/>
+					<CustomCard plan={CustomPricing} />
 				</div>
 			),
-			clips,
 		},
 	];
 
@@ -76,8 +58,6 @@ const PricingCTAandCards = () => {
 				tabs={tabs}
 				clips={clips}
 				setClips={setClips}
-				clipsToggled={clipsToggled}
-				handleClipsChange={handleClipsChange}
 			/>
 		</div>
 	);

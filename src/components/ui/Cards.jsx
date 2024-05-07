@@ -1,19 +1,27 @@
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import {cn} from '../../../utils/cn';
+import {ClipsContext} from '../../contexts/ClipsContext';
 
-export const Card = ({plan, clips, clipsToggled}) => {
+export const Card = ({plan}) => {
+	const {clips} = useContext(ClipsContext);
+	console.log(clips, plan);
 	return (
 		<div
 			className={cn(
-				'flex flex-col flex-1 gap-0 p-4 rounded-lg border border-solid border-stone-300 relative',
+				'flex flex-col flex-1 gap-0 p-4 rounded-lg border border-solid border-stone-300 relative transition-colors duration-300',
 
-				'bg-white text-garlic-800'
+				clips < 180 && plan.planName == 'Growth'
+					? 'bg-grease text-white'
+					: 'bg-white text-garlic-900'
 			)}>
 			<img
 				loading="lazy"
 				src="/PathCardBg.png"
 				alt="Pricing plan"
-				className="gap-0 w-full aspect-[1.37] absolute top-0 right-0"
+				className={cn(
+					'gap-0 w-[70%] aspect-[1.1] absolute top-0 right-0',
+					clips < 180 && plan.planName == 'Growth' ? 'opacity-20' : ''
+				)}
 			/>
 			<div className="flex z-10 flex-col gap-5 pb-20 mx-4 mt-0 max-md:mx-2.5">
 				<div className="flex flex-col gap-5 leading-[142%]">
@@ -26,16 +34,20 @@ export const Card = ({plan, clips, clipsToggled}) => {
 								</div>
 							)}
 						</div>
-						<div className="pb-3 mt-3 text-2xl tracking-tight text-zinc-600">
+						<div className="pb-3 mt-3 text-2xl tracking-tight">
 							<span className="">
 								{plan.price.currency} {plan.price.amount}
 							</span>{' '}
-							<span className="text-sm tracking-normal leading-5 text-zinc-600">
-								/month
-							</span>
+							<span className="text-sm tracking-normal leading-5">/month</span>
 						</div>
 					</div>
-					<button className="justify-center items-center px-5 py-3 mt-6 text-sm font-medium tracking-normal rounded-lg bg-stone-100 text-stone-400 hover:bg-[#943DEC] hover:text-garlic-300">
+					<button
+						className={cn(
+							'justify-center items-center px-5 py-3 mt-6 text-sm font-medium tracking-normal rounded-lg bg-stone-100 hover:bg-[#943DEC] hover:text-garlic-300',
+							clips < 180 &&
+								plan.planName == 'Growth' &&
+								'bg-[#943DEC] text-garlic'
+						)}>
 						{plan.planName == 'Free' ? (
 							'Start For Free'
 						) : (
@@ -47,12 +59,13 @@ export const Card = ({plan, clips, clipsToggled}) => {
 					<div className="flex flex-col gap-0 justify-center">
 						<hr className="shrink-0 gap-0 h-px bg-gray-200" />
 					</div>
-					<div className="flex flex-col gap-0 justify-center mt-5 text-sm tracking-normal leading-5 text-stone-700">
+					<div className="flex flex-col gap-0 justify-center mt-5 text-sm tracking-normal leading-5">
 						<div className="flex flex-col gap-4 justify-center">
 							{plan.features.map((feature, index) => (
 								<FeatureItem
 									key={index}
 									text={feature.text}
+									plan={plan}
 								/>
 							))}
 						</div>
@@ -63,37 +76,44 @@ export const Card = ({plan, clips, clipsToggled}) => {
 	);
 };
 
-export const CustomCard = ({plan, clips, clipsToggled}) => {
+export const CustomCard = ({plan}) => {
+	const {clips} = useContext(ClipsContext);
 	const [selectedOption, setSelectedOption] = useState(1200);
 
 	return (
 		<div
 			className={cn(
-				'flex flex-col flex-1 gap-0 p-4 bg-white text-garlic-800 rounded-lg border border-solid border-stone-300 relative'
+				'flex flex-col flex-1 gap-0 p-4 bg-white text-garlic-800 rounded-lg border border-solid border-stone-300 relative transition-colors duration-300',
+				clips > 180 && ' bg-grease text-garlic'
 			)}>
 			<img
 				loading="lazy"
 				src="/PathCardBg.png"
 				alt="Pricing plan"
-				className="gap-0 w-full aspect-[1.37] absolute top-0 right-0"
+				className={cn(
+					'gap-0 w-[70%] aspect-[1.1] absolute top-0 right-0',
+					clips > 180 && 'opacity-20'
+				)}
 			/>
 			<div className="flex z-10 flex-col gap-5 pb-20 mx-4 mt-0 max-md:mx-2.5">
 				<div className="flex flex-col gap-5 leading-[142%]">
 					<div className="flex flex-col gap-3 font-semibold">
-						<div className="justify-center text-sm tracking-normal whitespace-nowrap text-stone-800">
+						<div className="justify-center text-sm tracking-normal whitespace-nowrap">
 							{plan.planName}
 						</div>
-						<div className="pb-3 mt-3 text-2xl tracking-tight text-zinc-600">
-							<span className="text-stone-800">
+						<div className="pb-3 mt-3 text-2xl tracking-tight">
+							<span className="">
 								{plan.price[selectedOption].currency}{' '}
 								{plan.price[selectedOption].amount}
 							</span>{' '}
-							<span className="text-sm tracking-normal leading-5 text-zinc-600">
-								/month
-							</span>
+							<span className="text-sm tracking-normal leading-5">/month</span>
 						</div>
 					</div>
-					<button className="justify-center items-center px-5 py-3 mt-6 text-sm font-medium tracking-normal rounded-lg bg-stone-100 text-stone-400 hover:bg-[#943DEC] hover:text-garlic-300">
+					<button
+						className={cn(
+							'justify-center items-center px-5 py-3 mt-6 text-sm font-medium tracking-normal rounded-lg bg-stone-100 hover:bg-[#943DEC] hover:text-garlic-300',
+							clips > 180 && 'bg-[#943DEC] text-garlic'
+						)}>
 						{plan.planName == 'Free' ? (
 							'Start For Free'
 						) : (
@@ -115,6 +135,7 @@ export const CustomCard = ({plan, clips, clipsToggled}) => {
 								<FeatureItem
 									key={index}
 									text={feature.text}
+									plan={plan}
 								/>
 							))}
 						</div>
@@ -125,14 +146,24 @@ export const CustomCard = ({plan, clips, clipsToggled}) => {
 	);
 };
 
-const FeatureItem = ({text}) => (
-	<div className="flex gap-2">
-		<CheckIcon />
-		<div className="flex-1 gap-0">{text}</div>
-	</div>
-);
+const FeatureItem = ({text, plan}) => {
+	const {clips} = useContext(ClipsContext);
+	return (
+		<div
+			className={cn(
+				'flex gap-2',
+				`text-garlic-900`,
+				clips < 180 && plan.planName == 'Growth' && 'text-garlic',
+				clips > 180 && plan.planName == 'Custom' && 'text-garlic'
+			)}>
+			<CheckIcon />
+			<div>{text}</div>
+		</div>
+	);
+};
 
 const Select = ({selectedOption, setSelectedOption}) => {
+	const {clips} = useContext(ClipsContext);
 	const handleChange = (event) => {
 		setSelectedOption(event.target.value);
 	};
@@ -141,7 +172,7 @@ const Select = ({selectedOption, setSelectedOption}) => {
 		<div>
 			<label
 				htmlFor="ordinary-select"
-				className="block font-medium text-gray-700">
+				className="block font-medium">
 				Select an option:
 			</label>
 			<select
@@ -149,7 +180,9 @@ const Select = ({selectedOption, setSelectedOption}) => {
 				name="or-select"
 				value={selectedOption}
 				onChange={handleChange}
-				className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+				className={cn(
+					'mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md bg-white shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-grease'
+				)}>
 				<option value={1200}>1200 min</option>
 				<option value={1400}>1400 min</option>
 				<option value={1600}>1600 min</option>
@@ -169,7 +202,7 @@ const CheckIcon = () => (
 			fillRule="evenodd"
 			clipRule="evenodd"
 			d="M17.0303 8.78039L8.99993 16.8107L5.4696 13.2804L6.53026 12.2197L8.99993 14.6894L15.9696 7.71973L17.0303 8.78039Z"
-			fill="#080341"
+			fill="currentColor"
 		/>
 	</svg>
 );
